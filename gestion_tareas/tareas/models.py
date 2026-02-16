@@ -25,3 +25,37 @@ class Tarea(models.Model):
 
     def __str__(self):
         return self.titulo
+    
+# Clase para que los clientes envien incidencias
+class Incidencia(models.Model):
+    CATEGORIAS = [
+        ('tecnico', 'Soporte Técnico'),
+        ('facturacion', 'Facturación'),
+        ('acceso', 'Problema de acceso'),
+    ]
+
+    PRIORIDADES = [
+        ('baja', 'Baja'),
+        ('media', 'Media'),
+        ('alta', 'Alta'),
+    ]
+
+    ESTADOS = [
+        ('pendiente', 'Pendiente'),
+        ('proceso', 'En proceso'),
+        ('cerrada', 'Cerrada'),
+    ]
+
+    cliente = models.ForeignKey(User, on_delete=models.CASCADE)
+    asunto = models.CharField(max_length=200)
+    descripcion = models.TextField()
+    categoria = models.CharField(max_length=20, choices=CATEGORIAS, default='tecnico')
+    prioridad = models.CharField(max_length=20, choices=PRIORIDADES, default='media')
+    estado = models.CharField(max_length=20, choices=ESTADOS, default='pendiente')
+
+    archivo = models.FileField(upload_to='incidencias/', null=True, blank=True)  # <--- NUEVO
+
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.asunto} - {self.cliente.username}"

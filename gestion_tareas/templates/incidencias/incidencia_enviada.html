@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Incidencia Enviada</title>
+    <style>
+        /* Reset rápido */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h2 {
+            color: #44bd32; /* verde éxito */
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #2f3640;
+            margin-bottom: 30px;
+        }
+
+        a.button {
+            display: inline-block;
+            background-color: #40739e;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        a.button:hover {
+            background-color: #2f3640;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>¡Incidencia Enviada!</h2>
+    <p>Tu incidencia ha sido registrada correctamente. Nuestro equipo revisará tu solicitud y se pondrá en contacto contigo si es necesario.</p>
+
+    <a href="{% url 'crear_incidencia' %}" class="button">Enviar otra incidencia</a>
+    <br><br>
+    <a href="{% url 'lista_tareas' %}" class="button">Volver al panel de tareas</a>
+</div>
+
+</body>
+</html>

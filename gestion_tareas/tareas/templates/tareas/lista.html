@@ -3,38 +3,82 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mis Tareas</title>
-    <!-- Bootstrap CSS -->
+    <title>Panel de Tareas e Incidencias</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- CSS personalizado -->
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
 </head>
 <body class="bg-light">
 
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Mis Tareas</h1>
+    <h1 class="text-center mb-4">Panel de Tareas e Incidencias</h1>
 
     <div class="text-center mb-4">
-        <a href="{% url 'crear_tarea' %}" class="btn btn-success">Nueva tarea</a>
+        {% if not is_admin %}
+            <a href="{% url 'crear_tarea' %}" class="btn btn-success">Nueva Tarea</a>
+            <a href="{% url 'crear_incidencia' %}" class="btn btn-primary">Nueva Incidencia</a>
+        {% endif %}
     </div>
 
-    <div class="task-list">
+    <!-- Sección de Tareas -->
+    <div class="task-list mb-5">
+        <h2 class="mb-3">Tareas</h2>
         {% for tarea in tareas %}
-            <div class="task-card task-{{ tarea.estado|lower }}">
+            <div class="task-card task-{{ tarea.estado|lower }} card mb-3 p-3">
                 <h5>{{ tarea.titulo }}</h5>
                 <p class="text-muted">{{ tarea.descripcion }}</p>
                 <p><strong>Prioridad:</strong> {{ tarea.prioridad }}</p>
                 <p><strong>Vencimiento:</strong> {{ tarea.fecha_vencimiento|date:"d/m/Y H:i" }}</p>
 
-                <div class="d-flex justify-content-between mt-2">
-                    <a href="{% url 'editar_tarea' tarea.pk %}" class="btn btn-warning btn-sm">Editar</a>
-                    <a href="{% url 'eliminar_tarea' tarea.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+                {% if is_admin %}
+                    <div class="d-flex justify-content-between mt-2">
+                        <a href="{% url 'editar_tarea' tarea.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'eliminar_tarea' tarea.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+                        <a href="{% url 'asignar_tarea' tarea.pk %}" class="btn btn-info btn-sm">Asignar</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p class="text-center">No hay tareas disponibles</p>
+        {% endfor %}
+    </div>
+
+    <hr class="my-5">
+
+    <!-- Sección de Incidencias -->
+    <h2 class="mb-3">Incidencias</h2>
+
+    <div class="task-list">
+        {% for incidencia in incidencias %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>{{ incidencia.asunto }}</h5>
+                    <p class="text-muted">{{ incidencia.descripcion }}</p>
+                    <p><strong>Categoría:</strong> {{ incidencia.categoria }}</p>
+                    <p><strong>Prioridad:</strong> {{ incidencia.prioridad }}</p>
+                    <p><strong>Estado:</strong> {{ incidencia.estado }}</p>
+                    <p><strong>Creada:</strong> {{ incidencia.fecha_creacion|date:"d/m/Y H:i" }}</p>
+
+                    {% if incidencia.archivo %}
+                        <p>
+                            <strong>Archivo adjunto:</strong>
+                            <a href="{{ incidencia.archivo.url }}" target="_blank">Ver archivo</a>
+                        </p>
+                    {% endif %}
+
+                    {% if is_admin %}
+                        <div class="d-flex justify-content-between mt-2">
+                            <a href="{% url 'editar_incidencia' incidencia.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="{% url 'eliminar_incidencia' incidencia.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+                            <a href="{% url 'asignar_incidencia' incidencia.pk %}" class="btn btn-info btn-sm">Asignar</a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         {% empty %}
-            <p class="text-center">No tienes tareas</p>
+            <p class="text-center">No hay incidencias disponibles</p>
         {% endfor %}
     </div>
+
 </div>
 
 </body>

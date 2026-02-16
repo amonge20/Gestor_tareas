@@ -3,21 +3,126 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Iniciar sesión</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+    <title>Iniciar Sesión</title>
+    <style>
+        /* Reset rápido */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h2 {
+            color: #40739e;
+            margin-bottom: 25px;
+        }
+
+        form input[type="text"],
+        form input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #dcdde1;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+
+        form input[type="text"]:focus,
+        form input[type="password"]:focus {
+            border-color: #40739e;
+            outline: none;
+        }
+
+        button {
+            background-color: #40739e;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #2f3640;
+        }
+
+        .message {
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .message.success {
+            background-color: #44bd32;
+            color: #fff;
+        }
+
+        .message.error {
+            background-color: #e84118;
+            color: #fff;
+        }
+
+        .forgot-password {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #40739e;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
-<body class="d-flex justify-content-center align-items-center vh-100">
-    <div class="login-card text-center">
-        <h2>Iniciar sesión</h2>
-        {% if form.errors %}
-            <div class="alert alert-danger">Usuario o contraseña incorrectos.</div>
-        {% endif %}
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary w-100 mt-2">Entrar</button>
-        </form>
-    </div>
+<body>
+
+<div class="login-container">
+    <h2>Iniciar Sesión</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Usuario" required>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        <button type="submit">Iniciar sesión</button>
+    </form>
+
+    <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+</div>
+
 </body>
 </html>
